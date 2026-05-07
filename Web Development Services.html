@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Web Development Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --card: #16161f;
+      --accent: #00e5ff;
+      --accent2: #7b2fff;
+      --accent3: #ff4d6d;
+      --text: #e8e8f0;
+      --muted: #7a7a9a;
+      --border: rgba(255,255,255,0.07);
+      --glow: 0 0 40px rgba(0,229,255,0.15);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      width: 12px; height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
+      mix-blend-mode: screen;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid rgba(0,229,255,0.4);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.15s ease, width 0.25s, height 0.25s;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 60px;
+      background: rgba(10,10,15,0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo-wrap {
+      display: flex; align-items: center; gap: 14px;
+      text-decoration: none;
+    }
+
+    /* SVG Logo */
+    .logo-svg { width: 44px; height: 44px; flex-shrink: 0; }
+
+    .logo-text {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      line-height: 1.1;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+    .logo-text span { color: var(--accent); }
+
+    .nav-links {
+      display: flex; gap: 36px; list-style: none;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0; right: 0; height: 1px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    .nav-cta {
+      background: var(--accent);
+      color: #000 !important;
+      padding: 9px 22px;
+      border-radius: 6px;
+      font-weight: 700 !important;
+      font-size: 0.85rem !important;
+      letter-spacing: 0.03em;
+      transition: box-shadow 0.3s, transform 0.2s !important;
+    }
+    .nav-cta:hover {
+      box-shadow: 0 0 24px rgba(0,229,255,0.5);
+      transform: translateY(-1px);
+    }
+    .nav-cta::after { display: none !important; }
+
+    /* ── PAGE SECTIONS ── */
+    .page { display: none; min-height: 100vh; }
+    .page.active { display: block; }
+
+    /* ── HOME ── */
+    #home {
+      position: relative;
+      overflow: hidden;
+      padding-top: 80px;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 60% at 70% 40%, rgba(123,47,255,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 70%, rgba(0,229,255,0.12) 0%, transparent 60%),
+        var(--bg);
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+    }
+
+    .hero-content {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 120px 60px 80px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,229,255,0.08);
+      border: 1px solid rgba(0,229,255,0.2);
+      border-radius: 100px;
+      padding: 6px 18px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      animation: fadeUp 0.6s ease both;
+    }
+    .badge-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 800;
+      line-height: 1.06;
+      letter-spacing: -0.04em;
+      margin-bottom: 28px;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+    h1 .line2 { color: var(--accent); }
+    h1 .line3 { color: var(--accent2); }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 560px;
+      margin: 0 auto 48px;
+      line-height: 1.7;
+      font-weight: 300;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+
+    .hero-btns {
+      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      padding: 14px 34px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: none;
+      letter-spacing: 0.01em;
+      transition: box-shadow 0.3s, transform 0.2s;
+    }
+    .btn-primary:hover {
+      box-shadow: 0 0 32px rgba(0,229,255,0.5);
+      transform: translateY(-2px);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      padding: 14px 34px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .btn-outline:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* Stats */
+    .stats-row {
+      display: flex; justify-content: center; gap: 60px;
+      padding: 60px;
+      border-top: 1px solid var(--border);
+      animation: fadeUp 0.7s 0.5s ease both;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.04em;
+    }
+    .stat-label { font-size: 0.82rem; color: var(--muted); margin-top: 4px; }
+
+    /* Marquee */
+    .marquee-wrap {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+      background: var(--surface);
+    }
+    .marquee-track {
+      display: flex; gap: 48px;
+      animation: marquee 20s linear infinite;
+      width: max-content;
+    }
+    .marquee-item {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 0.82rem; font-weight: 500;
+      color: var(--muted); white-space: nowrap; letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .marquee-item .dot { color: var(--accent); font-size: 1.2rem; }
+
+    /* ── SERVICES ── */
+    #services { padding: 80px 0; }
+
+    .section-header {
+      text-align: center;
+      padding: 80px 60px 60px;
+    }
+    .section-label {
+      font-size: 0.75rem; font-weight: 600;
+      color: var(--accent); letter-spacing: 0.15em;
+      text-transform: uppercase; margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      color: var(--muted); font-size: 1rem; font-weight: 300;
+      max-width: 500px; margin: 0 auto; line-height: 1.7;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin: 0 60px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .service-card {
+      background: var(--card);
+      padding: 40px 36px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .service-card:hover { background: #1a1a28; }
+    .service-card:hover::before { transform: scaleX(1); }
+
+    .service-icon {
+      width: 52px; height: 52px;
+      border-radius: 12px;
+      background: rgba(0,229,255,0.08);
+      border: 1px solid rgba(0,229,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px;
+      font-size: 1.5rem;
+    }
+    .service-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem; font-weight: 700;
+      margin-bottom: 12px; letter-spacing: -0.02em;
+    }
+    .service-desc {
+      color: var(--muted); font-size: 0.88rem; line-height: 1.65;
+      font-weight: 300; margin-bottom: 20px;
+    }
+    .service-tags {
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+    .tag {
+      font-size: 0.72rem;
+      padding: 4px 10px;
+      border-radius: 100px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* ── PORTFOLIO ── */
+    #portfolio { padding: 80px 0; }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      padding: 0 60px;
+    }
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4), var(--glow);
+    }
+    .project-thumb {
+      height: 220px;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-thumb-inner {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 4rem;
+      position: relative;
+    }
+    .pt-ecom { background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); }
+    .pt-health { background: linear-gradient(135deg, #134e5e, #71b280); }
+    .pt-finance { background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); }
+    .pt-saas { background: linear-gradient(135deg, #2d1b69, #11998e); }
+
+    .project-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
+    }
+    .project-type-badge {
+      position: absolute; top: 16px; left: 16px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+    }
+
+    .project-info { padding: 28px; }
+    .project-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem; font-weight: 700;
+      margin-bottom: 8px; letter-spacing: -0.02em;
+    }
+    .project-desc { color: var(--muted); font-size: 0.87rem; line-height: 1.6; margin-bottom: 20px; }
+    .project-footer {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .project-tech { display: flex; gap: 8px; }
+    .project-link {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: rgba(0,229,255,0.1);
+      border: 1px solid rgba(0,229,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.2s, transform 0.2s;
+      font-size: 0.9rem;
+    }
+    .project-link:hover { background: var(--accent); transform: scale(1.1); }
+
+    /* ── CONTACT ── */
+    #contact { padding: 80px 60px; }
+
+    .contact-wrap {
+      max-width: 1000px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: start;
+    }
+
+    .contact-left h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.6rem; font-weight: 800;
+      letter-spacing: -0.04em; line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .contact-left p { color: var(--muted); line-height: 1.7; font-size: 0.95rem; margin-bottom: 36px; }
+
+    .contact-info { display: flex; flex-direction: column; gap: 20px; }
+    .contact-item {
+      display: flex; align-items: center; gap: 16px;
+    }
+    .contact-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      background: rgba(0,229,255,0.08);
+      border: 1px solid rgba(0,229,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .contact-item-text small { color: var(--muted); font-size: 0.75rem; }
+    .contact-item-text p { font-size: 0.9rem; font-weight: 500; }
+
+    .contact-form {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+    }
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block;
+      font-size: 0.78rem; font-weight: 600;
+      color: var(--muted); letter-spacing: 0.06em;
+      text-transform: uppercase; margin-bottom: 8px;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-appearance: none;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0,229,255,0.08);
+    }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-group select option { background: var(--surface); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .submit-btn {
+      width: 100%;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 14px;
+      border-radius: 8px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: box-shadow 0.3s, transform 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .submit-btn:hover {
+      box-shadow: 0 0 28px rgba(0,229,255,0.5);
+      transform: translateY(-1px);
+    }
+
+    /* ── ABOUT ── */
+    #about { padding: 80px 60px; }
+    .about-wrap {
+      max-width: 1100px; margin: 0 auto;
+    }
+    .about-hero {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+      margin-bottom: 80px;
+    }
+    .about-text h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.8rem; font-weight: 800;
+      letter-spacing: -0.04em; line-height: 1.1;
+      margin-bottom: 24px;
+    }
+    .about-text h2 span { color: var(--accent); }
+    .about-text p { color: var(--muted); line-height: 1.8; font-size: 0.95rem; margin-bottom: 16px; }
+
+    .about-visual {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px;
+      position: relative;
+    }
+    .about-visual::before {
+      content: '';
+      position: absolute; inset: -1px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(0,229,255,0.3), rgba(123,47,255,0.3), transparent 60%);
+      z-index: -1;
+    }
+
+    .skills-list { display: flex; flex-direction: column; gap: 16px; }
+    .skill-item { }
+    .skill-row {
+      display: flex; justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 0.85rem; font-weight: 500;
+    }
+    .skill-pct { color: var(--accent); font-weight: 700; }
+    .skill-bar {
+      height: 5px; background: rgba(255,255,255,0.06);
+      border-radius: 100px; overflow: hidden;
+    }
+    .skill-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 100px;
+      transition: width 1.5s ease;
+    }
+
+    .team-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .team-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 20px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .team-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+    }
+    .team-avatar {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      margin: 0 auto 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+    }
+    .av1 { background: linear-gradient(135deg, #667eea, #764ba2); }
+    .av2 { background: linear-gradient(135deg, #f093fb, #f5576c); }
+    .av3 { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+    .av4 { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+    .team-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .team-role { color: var(--muted); font-size: 0.8rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 40px 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-left { display: flex; align-items: center; gap: 12px; }
+    .footer-copy { color: var(--muted); font-size: 0.82rem; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a {
+      color: var(--muted); font-size: 0.82rem;
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 32px; right: 32px;
+      background: var(--accent);
+      color: #000;
+      padding: 14px 24px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      z-index: 999;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ═══════════ NAV ═══════════ -->
+<nav>
+  <a class="logo-wrap" href="#" onclick="showPage('home')">
+    <!-- Custom SVG Logo -->
+    <svg class="logo-svg" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="44" height="44" rx="10" fill="#111118"/>
+      <!-- Angle brackets -->
+      <path d="M7 22L14 15L11 22L14 29L7 22Z" fill="#00e5ff"/>
+      <path d="M37 22L30 15L33 22L30 29L37 22Z" fill="#7b2fff"/>
+      <!-- W letterform -->
+      <path d="M16 15L19 27L22 20L25 27L28 15" stroke="#e8e8f0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- Dot accent -->
+      <circle cx="22" cy="32" r="2" fill="#00e5ff"/>
+    </svg>
+    <div class="logo-text">Web Dev<br><span>Services</span></div>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('home')">Home</a></li>
+    <li><a href="#" onclick="showPage('services')">Services</a></li>
+    <li><a href="#" onclick="showPage('portfolio')">Portfolio</a></li>
+    <li><a href="#" onclick="showPage('about')">About</a></li>
+    <li><a href="#" class="nav-cta" onclick="showPage('contact')">Get a Quote</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════ HOME ═══════════ -->
+<div id="home" class="page active">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Accepting New Projects 2025-2026
+    </div>
+
+    <h1>
+      We Build<br>
+      <span class="line2">Digital Experiences</span><br>
+      <span class="line3">That Convert.</span>
+    </h1>
+    <p class="hero-sub">
+      From sleek landing pages to complex web apps — we craft fast, beautiful,
+      and conversion-focused websites for ambitious businesses.
+    </p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="showPage('contact')">Start Your Project →</button>
+      <button class="btn-outline" onclick="showPage('portfolio')">View Our Work</button>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat">
+      <div class="stat-num">150+</div>
+      <div class="stat-label">Projects Delivered</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">98%</div>
+      <div class="stat-label">Client Satisfaction</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">5+</div>
+      <div class="stat-label">Years Experience</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">40+</div>
+      <div class="stat-label">Industry Niches</div>
+    </div>
+  </div>
+
+  <div class="marquee-wrap">
+    <div class="marquee-track" id="marqueeTrack"></div>
+  </div>
+
+  <footer>
+    <div class="footer-left">
+      <svg width="28" height="28" viewBox="0 0 44 44" fill="none">
+        <rect width="44" height="44" rx="10" fill="#111118"/>
+        <path d="M7 22L14 15L11 22L14 29L7 22Z" fill="#00e5ff"/>
+        <path d="M37 22L30 15L33 22L30 29L37 22Z" fill="#7b2fff"/>
+        <path d="M16 15L19 27L22 20L25 27L28 15" stroke="#e8e8f0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="22" cy="32" r="2" fill="#00e5ff"/>
+      </svg>
+      <span class="footer-copy">© 2025-2026 Web Development Services. All rights reserved.</span>
+    </div>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#" onclick="showPage('contact')">Contact</a>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════ SERVICES ═══════════ -->
+<div id="services" class="page">
+  <div style="padding-top:80px;">
+    <div class="section-header">
+      <div class="section-label">What We Offer</div>
+      <h2 class="section-title">Our Web Development<br>Services</h2>
+      <p class="section-sub">End-to-end solutions from strategy and design to development and ongoing support.</p>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🛒</div>
+        <div class="service-name">E-Commerce Stores</div>
+        <p class="service-desc">High-converting online stores with seamless checkout, inventory management, and payment integrations that drive real revenue.</p>
+        <div class="service-tags">
+          <span class="tag">Shopify</span><span class="tag">WooCommerce</span><span class="tag">Custom</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🏢</div>
+        <div class="service-name">Corporate Websites</div>
+        <p class="service-desc">Professional, brand-forward corporate sites that build credibility, communicate your value proposition, and generate leads.</p>
+        <div class="service-tags">
+          <span class="tag">CMS</span><span class="tag">Multi-lang</span><span class="tag">SEO</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">⚡</div>
+        <div class="service-name">Landing Pages</div>
+        <p class="service-desc">Laser-focused, A/B-tested landing pages engineered for maximum conversion rates for your campaigns and product launches.</p>
+        <div class="service-tags">
+          <span class="tag">A/B Testing</span><span class="tag">Analytics</span><span class="tag">Fast</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📱</div>
+        <div class="service-name">Web Applications</div>
+        <p class="service-desc">Scalable, full-stack web apps with complex workflows, user auth, dashboards, and real-time data — built to grow with you.</p>
+        <div class="service-tags">
+          <span class="tag">React</span><span class="tag">Node.js</span><span class="tag">APIs</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🎨</div>
+        <div class="service-name">UI/UX Design</div>
+        <p class="service-desc">Intuitive, delightful interfaces backed by user research. From wireframes to polished Figma prototypes ready for handoff.</p>
+        <div class="service-tags">
+          <span class="tag">Figma</span><span class="tag">Wireframes</span><span class="tag">Design Systems</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔧</div>
+        <div class="service-name">Maintenance & SEO</div>
+        <p class="service-desc">Ongoing support, performance audits, security updates, and technical SEO to keep your site fast and visible on Google.</p>
+        <div class="service-tags">
+          <span class="tag">Speed Opt.</span><span class="tag">Core Web Vitals</span><span class="tag">Support</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Process -->
+    <div class="section-header" style="padding-top:80px;">
+      <div class="section-label">Our Process</div>
+      <h2 class="section-title">How We Work</h2>
+    </div>
+    <div style="display:flex; gap:0; max-width:1000px; margin: 0 auto 60px; padding: 0 60px; position:relative;">
+      <div style="position:absolute; top:36px; left:120px; right:120px; height:1px; background: linear-gradient(90deg,var(--accent),var(--accent2)); opacity:0.3;"></div>
+      <div style="flex:1; text-align:center; padding:20px;">
+        <div style="width:56px;height:56px;border-radius:50%;background:rgba(0,229,255,0.1);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--accent);">01</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:8px;">Discovery</div>
+        <div style="color:var(--muted);font-size:0.82rem;line-height:1.6;">Understanding goals, audience & requirements</div>
+      </div>
+      <div style="flex:1; text-align:center; padding:20px;">
+        <div style="width:56px;height:56px;border-radius:50%;background:rgba(123,47,255,0.1);border:2px solid var(--accent2);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--accent2);">02</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:8px;">Design</div>
+        <div style="color:var(--muted);font-size:0.82rem;line-height:1.6;">Wireframes, mockups & prototype approval</div>
+      </div>
+      <div style="flex:1; text-align:center; padding:20px;">
+        <div style="width:56px;height:56px;border-radius:50%;background:rgba(255,77,109,0.1);border:2px solid var(--accent3);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--accent3);">03</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:8px;">Develop</div>
+        <div style="color:var(--muted);font-size:0.82rem;line-height:1.6;">Clean code, tested across all devices</div>
+      </div>
+      <div style="flex:1; text-align:center; padding:20px;">
+        <div style="width:56px;height:56px;border-radius:50%;background:rgba(0,229,255,0.1);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--accent);">04</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:8px;">Launch</div>
+        <div style="color:var(--muted);font-size:0.82rem;line-height:1.6;">Deploy, optimize & ongoing support</div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-left">
+      <svg width="28" height="28" viewBox="0 0 44 44" fill="none"><rect width="44" height="44" rx="10" fill="#111118"/><path d="M7 22L14 15L11 22L14 29L7 22Z" fill="#00e5ff"/><path d="M37 22L30 15L33 22L30 29L37 22Z" fill="#7b2fff"/><path d="M16 15L19 27L22 20L25 27L28 15" stroke="#e8e8f0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22" cy="32" r="2" fill="#00e5ff"/></svg>
+      <span class="footer-copy">© 2025-2026 Web Development Services.</span>
+    </div>
+    <div class="footer-links"><a href="#" onclick="showPage('contact')">Get a Free Quote →</a></div>
+  </footer>
+</div>
+
+<!-- ═══════════ PORTFOLIO ═══════════ -->
+<div id="portfolio" class="page">
+  <div style="padding-top:80px;">
+    <div class="section-header">
+      <div class="section-label">Our Work</div>
+      <h2 class="section-title">Featured Projects</h2>
+      <p class="section-sub">A selection of websites and web apps we've built for clients across industries.</p>
+    </div>
+
+    <div class="portfolio-grid">
+      <div class="project-card">
+        <div class="project-thumb pt-ecom">
+          <div class="project-thumb-inner">🛒</div>
+          <div class="project-overlay"></div>
+          <div class="project-type-badge">E-COMMERCE</div>
+        </div>
+        <div class="project-info">
+          <div class="project-name">LuxCart Fashion Store</div>
+          <p class="project-desc">A premium Shopify store with custom theme, 3D product viewer, and one-click checkout. Increased conversion by 47% in 3 months.</p>
+          <div class="project-footer">
+            <div class="project-tech">
+              <span class="tag">Shopify</span><span class="tag">Custom Theme</span>
+            </div>
+            <div class="project-link">↗</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb pt-health">
+          <div class="project-thumb-inner">🏥</div>
+          <div class="project-overlay"></div>
+          <div class="project-type-badge">HEALTHCARE</div>
+        </div>
+        <div class="project-info">
+          <div class="project-name">MediCare Patient Portal</div>
+          <p class="project-desc">Full-stack web app for appointment booking, medical records, and patient-doctor messaging. HIPAA-compliant and mobile-ready.</p>
+          <div class="project-footer">
+            <div class="project-tech">
+              <span class="tag">React</span><span class="tag">Node.js</span>
+            </div>
+            <div class="project-link">↗</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb pt-finance">
+          <div class="project-thumb-inner">📊</div>
+          <div class="project-overlay"></div>
+          <div class="project-type-badge">FINTECH</div>
+        </div>
+        <div class="project-info">
+          <div class="project-name">CapitalEdge Dashboard</div>
+          <p class="project-desc">Real-time financial analytics dashboard with live charts, portfolio tracking, and automated reporting for investment firms.</p>
+          <div class="project-footer">
+            <div class="project-tech">
+              <span class="tag">Vue.js</span><span class="tag">WebSocket</span>
+            </div>
+            <div class="project-link">↗</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb pt-saas">
+          <div class="project-thumb-inner">🚀</div>
+          <div class="project-overlay"></div>
+          <div class="project-type-badge">SAAS</div>
+        </div>
+        <div class="project-info">
+          <div class="project-name">Flowdesk SaaS Platform</div>
+          <p class="project-desc">Marketing automation SaaS with landing page builder, email campaigns, and analytics. Onboarded 2,000+ users at launch.</p>
+          <div class="project-footer">
+            <div class="project-tech">
+              <span class="tag">Next.js</span><span class="tag">Stripe</span>
+            </div>
+            <div class="project-link">↗</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="section-header" style="padding-top:70px;">
+      <div class="section-label">Client Reviews</div>
+      <h2 class="section-title">What Clients Say</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding:0 60px 60px;">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;">
+        <div style="color:var(--accent);font-size:1.4rem;margin-bottom:16px;">★★★★★</div>
+        <p style="color:var(--muted);font-size:0.88rem;line-height:1.7;margin-bottom:20px;font-style:italic;">"Delivered our e-commerce store 2 weeks ahead of schedule. Sales jumped 60% in the first month. Absolutely outstanding work."</p>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;">👤</div>
+          <div><div style="font-weight:600;font-size:0.88rem;">Sarah M.</div><div style="color:var(--muted);font-size:0.75rem;">CEO, LuxCart</div></div>
+        </div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;">
+        <div style="color:var(--accent);font-size:1.4rem;margin-bottom:16px;">★★★★★</div>
+        <p style="color:var(--muted);font-size:0.88rem;line-height:1.7;margin-bottom:20px;font-style:italic;">"The patient portal they built is flawless. Patients love it, our staff love it. Best tech investment we've made in years."</p>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#4facfe,#00f2fe);display:flex;align-items:center;justify-content:center;">👤</div>
+          <div><div style="font-weight:600;font-size:0.88rem;">Dr. James R.</div><div style="color:var(--muted);font-size:0.75rem;">Director, MediCare</div></div>
+        </div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;">
+        <div style="color:var(--accent);font-size:1.4rem;margin-bottom:16px;">★★★★★</div>
+        <p style="color:var(--muted);font-size:0.88rem;line-height:1.7;margin-bottom:20px;font-style:italic;">"Launched our SaaS platform on time and within budget. The quality of their React code is exceptional — very easy to maintain."</p>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#43e97b,#38f9d7);display:flex;align-items:center;justify-content:center;">👤</div>
+          <div><div style="font-weight:600;font-size:0.88rem;">Alex T.</div><div style="color:var(--muted);font-size:0.75rem;">Founder, Flowdesk</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-left">
+      <svg width="28" height="28" viewBox="0 0 44 44" fill="none"><rect width="44" height="44" rx="10" fill="#111118"/><path d="M7 22L14 15L11 22L14 29L7 22Z" fill="#00e5ff"/><path d="M37 22L30 15L33 22L30 29L37 22Z" fill="#7b2fff"/><path d="M16 15L19 27L22 20L25 27L28 15" stroke="#e8e8f0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22" cy="32" r="2" fill="#00e5ff"/></svg>
+      <span class="footer-copy">© 2025-2026 Web Development Services.</span>
+    </div>
+    <div class="footer-links"><a href="#" onclick="showPage('contact')">Start a Project →</a></div>
+  </footer>
+</div>
+
+<!-- ═══════════ ABOUT ═══════════ -->
+<div id="about" class="page">
+  <div style="padding-top:80px;">
+    <div id="about" class="about-wrap" style="max-width:1100px;margin:0 auto;padding:80px 60px;">
+      <div class="section-label" style="margin-bottom:8px;">Who We Are</div>
+      <div class="about-hero">
+        <div class="about-text">
+          <h2>Building the <span>Web</span> of Tomorrow, Today.</h2>
+          <p>We're a passionate team of developers, designers, and digital strategists who believe that great websites aren't just beautiful — they drive results.</p>
+          <p>Founded in 2019, we've helped over 150 clients across 40+ industries establish powerful digital presences. We don't do cookie-cutter — every project is custom-crafted to your unique goals and audience.</p>
+          <p>Our approach combines deep technical expertise with a strong design sensibility, ensuring your website is both rock-solid under the hood and genuinely stunning to look at.</p>
+          <div style="display:flex;gap:16px;margin-top:32px;">
+            <button class="btn-primary" onclick="showPage('contact')">Work With Us</button>
+            <button class="btn-outline" onclick="showPage('portfolio')">See Portfolio</button>
+          </div>
+        </div>
+        <div class="about-visual">
+          <div style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:24px;font-size:1rem;">Technical Expertise</div>
+          <div class="skills-list">
+            <div class="skill-item">
+              <div class="skill-row"><span>Frontend Development</span><span class="skill-pct">95%</span></div>
+              <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-row"><span>UI/UX Design</span><span class="skill-pct">90%</span></div>
+              <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-row"><span>Backend & APIs</span><span class="skill-pct">88%</span></div>
+              <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-row"><span>E-Commerce</span><span class="skill-pct">92%</span></div>
+              <div class="skill-bar"><div class="skill-fill" style="width:92%"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-row"><span>SEO & Performance</span><span class="skill-pct">85%</span></div>
+              <div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team -->
+      <div style="margin-bottom:16px;">
+        <div class="section-label">Our Team</div>
+        <h2 class="section-title" style="margin-bottom:40px;">Meet the Experts</h2>
+      </div>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar av1">👨‍💻</div>
+          <div class="team-name">Ali Hassan</div>
+          <div class="team-role">Lead Developer</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar av2">👩‍🎨</div>
+          <div class="team-name">Sana Mirza</div>
+          <div class="team-role">UI/UX Designer</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar av3">👨‍💼</div>
+          <div class="team-name">Omar Sheikh</div>
+          <div class="team-role">Project Manager</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar av4">👩‍💻</div>
+          <div class="team-name">Zara Khan</div>
+          <div class="team-role">Backend Engineer</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer style="margin-top:0;">
+    <div class="footer-left">
+      <svg width="28" height="28" viewBox="0 0 44 44" fill="none"><rect width="44" height="44" rx="10" fill="#111118"/><path d="M7 22L14 15L11 22L14 29L7 22Z" fill="#00e5ff"/><path d="M37 22L30 15L33 22L30 29L37 22Z" fill="#7b2fff"/><path d="M16 15L19 27L22 20L25 27L28 15" stroke="#e8e8f0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22" cy="32" r="2" fill="#00e5ff"/></svg>
+      <span class="footer-copy">© 2025-2026 Web Development Services.</span>
+    </div>
+    <div class="footer-links"><a href="#" onclick="showPage('contact')">Get in Touch →</a></div>
+  </footer>
+</div>
+
+<!-- ═══════════ CONTACT ═══════════ -->
+<div id="contact" class="page">
+  <div style="padding-top:80px;">
+    <div class="section-header">
+      <div class="section-label">Let's Talk</div>
+      <h2 class="section-title">Start Your Project</h2>
+      <p class="section-sub">Tell us about your project and we'll get back to you with a free proposal within 24 hours.</p>
+    </div>
+
+    <div class="contact-wrap" style="padding:0 60px 80px;">
+      <div class="contact-left">
+        <h2>Ready to Build<br>Something <span style="color:var(--accent)">Great?</span></h2>
+        <p>Whether you need a simple landing page or a complex web application — we're here to make it happen. Fill out the form and our team will be in touch shortly.</p>
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-icon">📧</div>
+            <div class="contact-item-text">
+              <small>Email Us</small>
+              <p><a href="https://mail.google.com/mail/?view=cm&fs=1&to=ayyanmughal768@gmail.com&su=Project%20Inquiry%20%7C%20Web%20Development%20Services" target="_blank" style="color:var(--accent);text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity=0.75" onmouseout="this.style.opacity=1">ayyanmughal768@gmail.com</a></p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📞</div>
+            <div class="contact-item-text">
+              <small>Call Us</small>
+              <p>+92 313 125 5513</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div class="contact-item-text">
+              <small>Based In</small>
+              <p>Abbottabad, Pakistan (Remote Globally)</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">⏱️</div>
+            <div class="contact-item-text">
+              <small>Response Time</small>
+              <p>Within 24 hours</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" id="fname" placeholder="John"/>
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" id="lname" placeholder="Doe"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="email" placeholder="john@company.com"/>
+        </div>
+        <div class="form-group">
+          <label>Project Type</label>
+          <select id="ptype">
+            <option value="">Select a service...</option>
+            <option>E-Commerce Store</option>
+            <option>Corporate Website</option>
+            <option>Landing Page</option>
+            <option>Web Application</option>
+            <option>UI/UX Design Only</option>
+            <option>Maintenance & SEO</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Budget Range</label>
+          <select id="budget">
+            <option value="">Select budget...</option>
+            <option>$500 – $1,500</option>
+            <option>$1,500 – $5,000</option>
+            <option>$5,000 – $15,000</option>
+            <option>$15,000+</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tell Us About Your Project</label>
+          <textarea id="msg" placeholder="Describe your project goals, timeline, and any specific requirements..."></textarea>
+        </div>
+        <button class="submit-btn" onclick="handleSubmit()">Send My Request →</button>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-left">
+      <svg width="28" height="28" viewBox="0 0 44 44" fill="none"><rect width="44" height="44" rx="10" fill="#111118"/><path d="M7 22L14 15L11 22L14 29L7 22Z" fill="#00e5ff"/><path d="M37 22L30 15L33 22L30 29L37 22Z" fill="#7b2fff"/><path d="M16 15L19 27L22 20L25 27L28 15" stroke="#e8e8f0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22" cy="32" r="2" fill="#00e5ff"/></svg>
+      <span class="footer-copy">© 2025-2026 Web Development Services.</span>
+    </div>
+    <div class="footer-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div>
+  </footer>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">✅ Opening Gmail — your message is ready to send!</div>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    }, 60);
+  });
+  document.querySelectorAll('a,button,.service-card,.project-card,.team-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '20px'; cursor.style.height = '20px';
+      ring.style.width = '50px'; ring.style.height = '50px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '12px'; cursor.style.height = '12px';
+      ring.style.width = '36px'; ring.style.height = '36px';
+    });
+  });
+
+  // Page switching
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0,0);
+  }
+
+  // Marquee
+  const tech = ['React.js','Next.js','Vue.js','Node.js','Shopify','WordPress','Figma','TypeScript','MongoDB','PostgreSQL','Stripe','AWS','Tailwind CSS','GraphQL'];
+  const track = document.getElementById('marqueeTrack');
+  if (track) {
+    const items = [...tech,...tech].map(t => `<div class="marquee-item"><span class="dot">✦</span>${t}</div>`).join('');
+    track.innerHTML = items;
+  }
+
+  // Form submit — opens Gmail compose with all fields pre-filled
+  function handleSubmit() {
+    const fname   = document.getElementById('fname').value.trim();
+    const lname   = document.getElementById('lname').value.trim();
+    const email   = document.getElementById('email').value.trim();
+    const ptype   = document.getElementById('ptype').value;
+    const budget  = document.getElementById('budget').value;
+    const msg     = document.getElementById('msg').value.trim();
+
+    if (!fname || !email) {
+      alert('Please fill in at least your first name and email address.');
+      return;
+    }
+
+    const subject = `Project Inquiry${ptype ? ' — ' + ptype : ''} | Web Development Services`;
+
+    const body =
+`Hi Ayyan,
+
+I'm interested in your web development services. Here are my details:
+
+Name: ${fname} ${lname}
+Email: ${email}
+Project Type: ${ptype || 'Not specified'}
+Budget: ${budget || 'Not specified'}
+
+Message:
+${msg || 'No additional message provided.'}
+
+Looking forward to hearing from you!
+
+— ${fname} ${lname}`;
+
+    // Open Gmail web app compose directly
+    const gmailURL =
+      'https://mail.google.com/mail/?view=cm&fs=1' +
+      '&to=ayyanmughal768@gmail.com' +
+      '&su=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(body);
+    window.open(gmailURL, '_blank');
+
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 4500);
+
+    // Reset form
+    ['fname','lname','email','msg'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('ptype').value = '';
+    document.getElementById('budget').value = '';
+  }
+</script>
+</body>
+</html>
